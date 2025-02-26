@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BillixAppApplication {
+public class BillOnTraxApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BillixAppApplication.class, args);
+        SpringApplication.run(BillOnTraxApplication.class, args);
     }
 
 }
