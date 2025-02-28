@@ -111,7 +111,7 @@ public class SecurityConfig {
                     }
 
                     Optional<AuthenticationDetails> optionalAuthenticationDetails = authenticationDetailsRepository.findByAccessTokenAndRefreshTokenAndUserIdOrderByCreatedOnDesc(token, refreshToken, extractedToken.getUserId());
-                    if (optionalAuthenticationDetails.isEmpty() || optionalAuthenticationDetails.get().getCreatedOn().after(currentDate)) {
+                    if (optionalAuthenticationDetails.isEmpty()) {
                         throw new UnAuthorizedException("No active session found. Please log in to proceed.");
                     }
 
