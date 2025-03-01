@@ -8,6 +8,6 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 public interface BusinessRepository extends JpaRepository<Business, BigInteger> {
-    @Query("select new com.billontrax.modules.business.modals.BusinessDetailsDto(c, u) from Company c join Users u on u.id = c.ownerId where c.id = :id")
-    Optional<BusinessDetailsDto> fetchCompanyDetailsById(BigInteger id);
+    @Query("select new com.billontrax.modules.business.modals.BusinessDetailsDto(c, u) from Business c join Users u on u.id = c.ownerId where c.id = :id")
+    Optional<BusinessDetailsDto> fetchBusinessDetailsById(BigInteger id);
 }

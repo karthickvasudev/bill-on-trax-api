@@ -6,7 +6,7 @@ import com.billontrax.modules.business.modals.NewBusinessCreateRequest;
 import java.math.BigInteger;
 
 public interface IBusinessService {
-    BigInteger inviteCompanyAndUser(NewBusinessCreateRequest body);
+    BigInteger inviteBusinessAndUser(NewBusinessCreateRequest body);
 
-    BusinessDetailsDto fetchCompanyDetailsById(BigInteger id);
+    BusinessDetailsDto fetchBusinessDetailsById(BigInteger id);
 }

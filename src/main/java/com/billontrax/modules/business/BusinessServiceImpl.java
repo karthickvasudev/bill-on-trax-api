@@ -19,7 +19,7 @@ public class BusinessServiceImpl implements IBusinessService {
     private final IUserService userService;
 
     @Override
-    public BigInteger inviteCompanyAndUser(NewBusinessCreateRequest body) {
+    public BigInteger inviteBusinessAndUser(NewBusinessCreateRequest body) {
         CreateBusinessRequest companyDetails = body.getCompanyDetails();
         CreateUserRequest ownerDetails = body.getOwnerDetails();
         User user = userService.createUser(ownerDetails);
@@ -34,7 +34,7 @@ public class BusinessServiceImpl implements IBusinessService {
     }
 
     @Override
-    public BusinessDetailsDto fetchCompanyDetailsById(BigInteger id) {
-        return businessRepository.fetchCompanyDetailsById(id).orElseThrow(() -> new ErrorMessageException("Company Details not found"));
+    public BusinessDetailsDto fetchBusinessDetailsById(BigInteger id) {
+        return businessRepository.fetchBusinessDetailsById(id).orElseThrow(() -> new ErrorMessageException("Company Details not found"));
     }
 }

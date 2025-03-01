@@ -2,6 +2,7 @@ package com.billontrax.modules.user;
 
 import com.billontrax.common.models.CurrentUser;
 import com.billontrax.exceptions.ErrorMessageException;
+import com.billontrax.modules.permission.RolePermissionMapRepository;
 import com.billontrax.modules.user.modals.CreateUserRequest;
 import com.billontrax.modules.user.modals.ResetPasswordRequest;
 import com.billontrax.modules.user.modals.UserProfileDto;
@@ -18,11 +19,14 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final CurrentUser currentUser;
     private final PasswordEncoder passwordEncoder;
+    private final RolePermissionMapRepository rolePermissionMapRepository;
     @Override
     public UserProfileDto fetchProfile() {
         Optional<UserProfileDto> optionalUserProfile = userRepository.fetchUserProfileById(currentUser.getUserId());
         if(optionalUserProfile.isEmpty()) throw new ErrorMessageException("user not found");
-        return optionalUserProfile.get();
+        UserProfileDto userProfile = optionalUserProfile.get();
+        userProfile.setPermissions(rolePermissionMapRepository.fetchPermissionListByRole(userProfile.getRole()));
+        return userProfile;
     }
 
     @Override

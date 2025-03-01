@@ -20,7 +20,7 @@ public class BusinessController {
     public ApiResponse<BigInteger> createCompany(@RequestBody NewBusinessCreateRequest body) {
         ApiResponse<BigInteger> response = new ApiResponse<>();
         response.setStatus(new ResponseStatus(ResponseCode.CREATED, "Company created successfully."));
-        response.setData(companyService.inviteCompanyAndUser(body));
+        response.setData(companyService.inviteBusinessAndUser(body));
         return response;
     }
 
@@ -28,7 +28,7 @@ public class BusinessController {
     public ApiResponse<BusinessDetailsDto> getCompanyById(@PathVariable("id") BigInteger id) {
         ApiResponse<BusinessDetailsDto> response = new ApiResponse<>();
         response.setStatus(new ResponseStatus(ResponseCode.OK, "Company retrieved successfully."));
-        response.setData(companyService.fetchCompanyDetailsById(id));
+        response.setData(companyService.fetchBusinessDetailsById(id));
         return response;
     }
 }

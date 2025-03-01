@@ -29,6 +29,5 @@ public class BusinessDetailsDto {
         this.state = business.getState();
         this.zip = business.getZip();
         this.ownerInformation = new OwnerInformationDto(user);
-
     }
 }
