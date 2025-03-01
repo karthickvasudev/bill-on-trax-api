@@ -1,10 +1,10 @@
-package com.billontrax.modules.company;
+package com.billontrax.modules.business;
 
 import com.billontrax.common.enums.ResponseCode;
 import com.billontrax.common.models.ApiResponse;
 import com.billontrax.common.models.ResponseStatus;
-import com.billontrax.modules.company.modals.CompanyDetailsDto;
-import com.billontrax.modules.company.modals.NewCompanyCreateRequest;
+import com.billontrax.modules.business.modals.BusinessDetailsDto;
+import com.billontrax.modules.business.modals.NewBusinessCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +13,11 @@ import java.math.BigInteger;
 @RestController
 @RequestMapping("api/company")
 @RequiredArgsConstructor
-public class CompanyController {
-    private final ICompanyService companyService;
+public class BusinessController {
+    private final IBusinessService companyService;
 
     @PostMapping("create")
-    public ApiResponse<BigInteger> createCompany(@RequestBody NewCompanyCreateRequest body) {
+    public ApiResponse<BigInteger> createCompany(@RequestBody NewBusinessCreateRequest body) {
         ApiResponse<BigInteger> response = new ApiResponse<>();
         response.setStatus(new ResponseStatus(ResponseCode.CREATED, "Company created successfully."));
         response.setData(companyService.inviteCompanyAndUser(body));
@@ -25,8 +25,8 @@ public class CompanyController {
     }
 
     @GetMapping("{id}")
-    public ApiResponse<CompanyDetailsDto> getCompanyById(@PathVariable("id") BigInteger id) {
-        ApiResponse<CompanyDetailsDto> response = new ApiResponse<>();
+    public ApiResponse<BusinessDetailsDto> getCompanyById(@PathVariable("id") BigInteger id) {
+        ApiResponse<BusinessDetailsDto> response = new ApiResponse<>();
         response.setStatus(new ResponseStatus(ResponseCode.OK, "Company retrieved successfully."));
         response.setData(companyService.fetchCompanyDetailsById(id));
         return response;

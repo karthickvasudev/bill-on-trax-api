@@ -1,6 +1,6 @@
-package com.billontrax.modules.company.modals;
+package com.billontrax.modules.business.modals;
 
-import com.billontrax.modules.company.Company;
+import com.billontrax.modules.business.Business;
 import com.billontrax.modules.user.User;
 import com.billontrax.modules.user.modals.OwnerInformationDto;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.math.BigInteger;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDetailsDto {
+public class BusinessDetailsDto {
     private BigInteger id;
     private String name;
     private String address;
@@ -21,13 +21,13 @@ public class CompanyDetailsDto {
     private String zip;
     private OwnerInformationDto ownerInformation;
 
-    public CompanyDetailsDto(Company company, User user) {
-        this.id = company.getId();
-        this.name = company.getName();
-        this.address = company.getAddress();
-        this.city = company.getCity();
-        this.state = company.getState();
-        this.zip = company.getZip();
+    public BusinessDetailsDto(Business business, User user) {
+        this.id = business.getId();
+        this.name = business.getName();
+        this.address = business.getAddress();
+        this.city = business.getCity();
+        this.state = business.getState();
+        this.zip = business.getZip();
         this.ownerInformation = new OwnerInformationDto(user);
 
     }

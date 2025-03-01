@@ -1,4 +1,4 @@
-package com.billontrax.modules.company.modals;
+package com.billontrax.modules.business.modals;
 
 import com.billontrax.modules.user.modals.CreateUserRequest;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewCompanyCreateRequest {
-    private CreateCompanyRequest companyDetails;
+public class NewBusinessCreateRequest {
+    private CreateBusinessRequest companyDetails;
     private CreateUserRequest ownerDetails;
 }

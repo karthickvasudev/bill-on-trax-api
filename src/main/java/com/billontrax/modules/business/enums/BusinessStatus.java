@@ -1,5 +1,5 @@
-package com.billontrax.modules.company.enums;
+package com.billontrax.modules.business.enums;
 
-public enum CompanyStatus {
+public enum BusinessStatus {
     CREATED, INVITED, COMPANY_DETAILED_UPDATED, USER_DETAILS_UPDATED, ACTIVE, INACTIVE, BLOCKED
 }

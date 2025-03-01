@@ -1,6 +1,6 @@
-package com.billontrax.modules.company;
+package com.billontrax.modules.business;
 
-import com.billontrax.modules.company.enums.CompanyStatus;
+import com.billontrax.modules.business.enums.BusinessStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 import java.util.Date;
 
-@Entity(name = "Company")
+@Entity(name = "Business")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Company {
+public class Business {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigInteger id;
     private BigInteger ownerId;
     private String name;
@@ -23,12 +24,13 @@ public class Company {
     private String state;
     private String zip;
     @Enumerated(EnumType.STRING)
-    private CompanyStatus status;
+    private BusinessStatus status;
     private Boolean isDeleted;
     private Date createdOn;
     private Date updatedOn;
     @PrePersist
     public void beforeCreate() {
+        this.status = BusinessStatus.CREATED;
         this.createdOn = new Date();
         this.isDeleted = false;
     }

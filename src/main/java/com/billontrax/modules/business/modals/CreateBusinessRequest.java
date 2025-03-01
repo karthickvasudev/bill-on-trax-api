@@ -1,4 +1,4 @@
-package com.billontrax.modules.company.modals;
+package com.billontrax.modules.business.modals;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCompanyRequest {
+public class CreateBusinessRequest {
     private String companyName;
     private String address;
     private String city;
