@@ -1,6 +1,7 @@
 package com.billontrax.modules.business;
 
 import com.billontrax.exceptions.ErrorMessageException;
+import com.billontrax.modules.business.enums.BusinessStatus;
 import com.billontrax.modules.business.modals.BusinessDetailsDto;
 import com.billontrax.modules.business.modals.BusinessListDto;
 import com.billontrax.modules.business.modals.CreateBusinessRequest;
@@ -43,5 +44,16 @@ public class BusinessServiceImpl implements IBusinessService {
     @Override
     public List<BusinessListDto> fetchBusinessList() {
         return businessRepository.fetchBusinessList();
+    }
+
+    @Override
+    public void sendInvite(BigInteger id) {
+        Business business = businessRepository.findById(id).orElseThrow(() -> new ErrorMessageException("Business details not found"));
+
+        if (business.getStatus().equals(BusinessStatus.CREATED)) {
+            business.setStatus(BusinessStatus.INVITED);
+        }
+        business = businessRepository.save(business);
+
     }
 }

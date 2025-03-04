@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/business")
@@ -39,6 +40,14 @@ public class BusinessController {
         ApiResponse<List<BusinessListDto>> response = new ApiResponse<>();
         response.setStatus(new ResponseStatus(ResponseCode.OK, "data retrieved successfully."));
         response.setData(businessService.fetchBusinessList());
+        return response;
+    }
+
+    @PutMapping("sendInvite/{id}")
+    public ApiResponse<Void> sendInvite(@PathVariable BigInteger id) {
+        ApiResponse<Void> response = new ApiResponse<>();
+        response.setStatus(new ResponseStatus(ResponseCode.OK, "Invite sent successfully"));
+        businessService.sendInvite(id);
         return response;
     }
 }

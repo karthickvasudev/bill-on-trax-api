@@ -13,4 +13,6 @@ public interface IBusinessService {
     BusinessDetailsDto fetchBusinessDetailsById(BigInteger id);
 
     List<BusinessListDto> fetchBusinessList();
+
+    void sendInvite(BigInteger id);
 }
