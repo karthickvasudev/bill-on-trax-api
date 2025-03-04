@@ -22,7 +22,7 @@ public class Business {
     private String address;
     private String city;
     private String state;
-    private String zip;
+    private String zipcode;
     @Enumerated(EnumType.STRING)
     private BusinessStatus status;
     private Boolean isDeleted;

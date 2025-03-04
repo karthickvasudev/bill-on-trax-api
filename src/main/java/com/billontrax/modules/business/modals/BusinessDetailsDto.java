@@ -27,7 +27,7 @@ public class BusinessDetailsDto {
         this.address = business.getAddress();
         this.city = business.getCity();
         this.state = business.getState();
-        this.zip = business.getZip();
+        this.zip = business.getZipcode();
         this.ownerInformation = new OwnerInformationDto(user);
     }
 }

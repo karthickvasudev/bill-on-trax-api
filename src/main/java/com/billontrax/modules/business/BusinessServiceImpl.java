@@ -2,6 +2,7 @@ package com.billontrax.modules.business;
 
 import com.billontrax.exceptions.ErrorMessageException;
 import com.billontrax.modules.business.modals.BusinessDetailsDto;
+import com.billontrax.modules.business.modals.BusinessListDto;
 import com.billontrax.modules.business.modals.CreateBusinessRequest;
 import com.billontrax.modules.business.modals.NewBusinessCreateRequest;
 import com.billontrax.modules.user.IUserService;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -24,17 +26,22 @@ public class BusinessServiceImpl implements IBusinessService {
         CreateUserRequest ownerDetails = body.getOwnerDetails();
         User user = userService.createUser(ownerDetails);
         Business business = new Business();
-        business.setName(companyDetails.getCompanyName());
+        business.setName(companyDetails.getBusinessName());
         business.setOwnerId(user.getId());
         business.setAddress(companyDetails.getAddress());
         business.setCity(companyDetails.getCity());
         business.setState(companyDetails.getState());
-        business.setZip(companyDetails.getZip());
+        business.setZipcode(companyDetails.getZipcode());
         return businessRepository.save(business).getId();
     }
 
     @Override
     public BusinessDetailsDto fetchBusinessDetailsById(BigInteger id) {
         return businessRepository.fetchBusinessDetailsById(id).orElseThrow(() -> new ErrorMessageException("Company Details not found"));
+    }
+
+    @Override
+    public List<BusinessListDto> fetchBusinessList() {
+        return businessRepository.fetchBusinessList();
     }
 }

@@ -1,21 +1,17 @@
 package com.billontrax.modules.user.modals;
 
-import com.billontrax.modules.permission.Permission;
 import com.billontrax.modules.permission.PermissionNames;
 import com.billontrax.modules.role.Role;
 import com.billontrax.modules.role.RoleName;
 import com.billontrax.modules.user.User;
 import com.billontrax.modules.user.UserDetailsImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
