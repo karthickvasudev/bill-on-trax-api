@@ -1,8 +1,7 @@
 package com.billontrax.modules.business;
 
-import com.billontrax.modules.business.modals.BusinessDetailsDto;
-import com.billontrax.modules.business.modals.BusinessListDto;
-import com.billontrax.modules.business.modals.NewBusinessCreateRequest;
+import com.billontrax.modules.business.enums.BusinessStatus;
+import com.billontrax.modules.business.modals.*;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -15,4 +14,8 @@ public interface IBusinessService {
     List<BusinessListDto> fetchBusinessList();
 
     void sendInvite(BigInteger id);
+
+	BusinessDto updateBusinessInformation(BigInteger businessId, UpdateBusinessRequest updateBusinessRequest);
+
+	Business updateStatus(BigInteger businessId, BusinessStatus businessStatus);
 }

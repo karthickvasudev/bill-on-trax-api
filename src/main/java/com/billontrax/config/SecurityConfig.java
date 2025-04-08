@@ -67,7 +67,7 @@ public class SecurityConfig {
             });
         });
         security.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-            authorizationManagerRequestMatcherRegistry.requestMatchers("/api/auth/login/**").permitAll();
+            authorizationManagerRequestMatcherRegistry.requestMatchers("/api/auth/login/**", "/api/onboarding/**").permitAll();
             authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
         });
         security.sessionManagement(httpSecuritySessionManagementConfigurer -> {
@@ -136,7 +136,8 @@ public class SecurityConfig {
 
             @Override
             protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-                return request.getRequestURI().equals("/api/auth/login");
+                return request.getRequestURI().equals("/api/auth/login")
+                        || request.getRequestURI().startsWith("/api/onboarding");
             }
         };
     }

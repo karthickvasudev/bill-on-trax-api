@@ -1,10 +1,8 @@
 package com.billontrax.modules.commontable;
 
+import com.billontrax.convertors.MapStringObjectConvertor;
 import com.billontrax.modules.commontable.enums.ColumnType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +23,9 @@ public class TableConfig {
     private String responseNode;
     @Enumerated(EnumType.STRING)
     private ColumnType type;
+    @Convert(converter = MapStringObjectConvertor.class)
     private Map<String, Object> enumDisplayValue;
+    @Convert(converter = MapStringObjectConvertor.class)
     private Map<String, Object> buttonDetails;
     private Boolean isSearchable;
     private Boolean isSortable;

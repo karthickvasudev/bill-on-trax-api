@@ -5,11 +5,13 @@ import com.billontrax.exceptions.ErrorMessageException;
 import com.billontrax.modules.permission.RolePermissionMapRepository;
 import com.billontrax.modules.user.modals.CreateUserRequest;
 import com.billontrax.modules.user.modals.ResetPasswordRequest;
+import com.billontrax.modules.user.modals.UpdateUserInformationRequest;
 import com.billontrax.modules.user.modals.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,6 +51,25 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(body.getPassword());
         user.setPhoneNumber(body.getPhoneNumber());
         user.setIsPasswordResetRequired(true);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUserInformation(BigInteger userId, UpdateUserInformationRequest body) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ErrorMessageException("user not found"));
+        user.setFirstName(body.getFirstName());
+        user.setLastName(body.getLastName());
+        user.setEmail(body.getEmail());
+        user.setPhoneNumber(body.getPhoneNumber());
+        user.setIsPasswordResetRequired(false);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updatePassword(BigInteger userId, ResetPasswordRequest body) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ErrorMessageException("user not found"));
+        user.setPassword(passwordEncoder.encode(body.getPassword()));
+        user.setIsPasswordResetRequired(false);
         return userRepository.save(user);
     }
 }

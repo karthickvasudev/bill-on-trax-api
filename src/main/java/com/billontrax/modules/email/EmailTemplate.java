@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 import java.util.Date;
 
-@Entity(name = "EmailTemplate")
+@Entity(name = "EmailTemplates")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,6 +18,7 @@ public class EmailTemplate {
     private BigInteger id;
     private String templateName;
     private String subject;
+    @Lob
     private String htmlContent;
     private Boolean isDeleted;
     private Date createdOn;

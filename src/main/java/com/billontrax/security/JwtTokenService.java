@@ -3,8 +3,10 @@ package com.billontrax.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.billontrax.common.models.ExtractedTokenDto;
+import com.billontrax.exceptions.UnAuthorizedException;
 import com.billontrax.modules.user.modals.UserProfileDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,9 +38,13 @@ public class JwtTokenService {
     }
 
     public ExtractedTokenDto extractTokenDetails(String token){
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT verifiedToken = verifier.verify(token);
-        BigInteger userId = BigInteger.valueOf(Long.parseLong(verifiedToken.getSubject()));
-        return new ExtractedTokenDto(userId, verifiedToken.getExpiresAt());
+        try {
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT verifiedToken = verifier.verify(token);
+            BigInteger userId = BigInteger.valueOf(Long.parseLong(verifiedToken.getSubject()));
+            return new ExtractedTokenDto(userId, verifiedToken.getExpiresAt());
+        }catch (TokenExpiredException e){
+            throw new UnAuthorizedException("Your has session expired. Please log in to proceed.");
+        }
     }
 }
