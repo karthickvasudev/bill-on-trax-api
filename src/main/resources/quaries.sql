@@ -1,14 +1,12 @@
 create table authentication_details
 (
-    id            bigint auto_increment,
-    user_id       bigint       not null,
-    access_token  varchar(255) not null,
-    refresh_token varchar(255) not null,
-    created_time  datetime     not null default current_timestamp,
-    primary key (id)
+    id           varchar(255) primary key,
+    user_id      bigint   not null unique,
+    business_id  bigint   not null,
+    created_time datetime not null default current_timestamp
 );
 
-create table user
+create table users
 (
     id                         bigint auto_increment,
     business_id                bigint       not null,
@@ -24,11 +22,11 @@ create table user
     primary key (id)
 );
 
-insert into user (business_id, name, username, email, phone_number, password, is_password_reset_required, is_deleted)
+insert into users (business_id, name, username, email, phone_number, password, is_password_reset_required, is_deleted)
 values (0, 'Super Admin', 'karthickvasudevan143', 'karthick.vasudevan.143@gmail.com', '9361312424',
         'bill_on_trax_first_time_login', true, false);
 
-create table role
+create table roles
 (
     id                  bigint auto_increment,
     name                varchar(255) not null,
@@ -91,7 +89,7 @@ create table permission_feature_permission_group_map
     primary key (id)
 );
 
-insert into role (name, business_id, permission_group_id, created_time, updated_time)
+insert into roles (name, business_id, permission_group_id, created_time, updated_time)
 values ('Super Admin', 0, 1, current_timestamp, null);
 
 insert into role_user_map (user_id, role_id)
@@ -239,3 +237,22 @@ values (0, 'Business Invite', 'BUSINESS_INVITE',
   </body>
 </html>
 ', true);
+
+create table stores
+(
+    id           bigint auto_increment primary key,
+    business_id  bigint       not null,
+    name         varchar(255) not null,
+    email        varchar(255) not null unique,
+    phone_number varchar(255) not null unique,
+    address      varchar(255) null,
+    city         varchar(255) null,
+    state        varchar(255) null,
+    country      varchar(255) null,
+    zip_code     varchar(255) null,
+    logo_url     varchar(255) null,
+    is_deleted   boolean      not null default false,
+    created_by   bigint       not null,
+    created_time datetime     not null default current_timestamp,
+    updated_time datetime     null
+)

@@ -1,6 +1,6 @@
 package com.billontrax.modules.core.user.services.impl;
 
-import com.billontrax.common.dtos.CurrentUser;
+import com.billontrax.common.config.CurrentUserHolder;
 import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.modules.core.permission.services.PermissionService;
 import com.billontrax.modules.core.user.dto.CreateUserRequest;
@@ -22,21 +22,20 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PermissionService permissionService;
-    private final CurrentUser currentUser;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserProfileDto fetchProfile() {
-        Optional<UserProfileDto> optionalUserProfile = userRepository.fetchUserProfileById(currentUser.getUserId());
+        Optional<UserProfileDto> optionalUserProfile = userRepository.fetchUserProfileById(CurrentUserHolder.getUserId(), CurrentUserHolder.getBusinessId());
         if(optionalUserProfile.isEmpty()) throw new ErrorMessageException("user not found");
         UserProfileDto userProfile = optionalUserProfile.get();
-        userProfile.setUserPermissions(permissionService.getPermissions(currentUser.getUserId()));
+        userProfile.setUserPermissions(permissionService.getPermissions(CurrentUserHolder.getUserId()));
         return userProfile;
     }
 
     @Override
     public void resetPassword(ResetPasswordRequest body) {
-        User user = userRepository.findById(currentUser.getUserId()).orElseThrow(() -> new ErrorMessageException("user not found"));
+        User user = userRepository.findById(CurrentUserHolder.getUserId()).orElseThrow(() -> new ErrorMessageException("user not found"));
         user.setPassword(passwordEncoder.encode(body.getPassword()));
         user.setIsPasswordResetRequired(false);
         userRepository.save(user);

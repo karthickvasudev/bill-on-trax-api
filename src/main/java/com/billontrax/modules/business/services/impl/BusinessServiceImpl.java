@@ -1,11 +1,13 @@
 package com.billontrax.modules.business.services.impl;
 
 import com.billontrax.common.config.PropertyConfig;
+import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.common.services.EmailService;
 import com.billontrax.common.services.FileUploadService;
 import com.billontrax.common.utils.RandomUtil;
 import com.billontrax.modules.business.dtos.BusinessDetailDto;
 import com.billontrax.modules.business.dtos.CreateBusinessRequest;
+import com.billontrax.modules.business.dtos.OnboardingDetailsDto;
 import com.billontrax.modules.business.entities.Business;
 import com.billontrax.modules.business.enums.BusinessStatus;
 import com.billontrax.modules.business.repositories.BusinessRepository;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +82,11 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public BusinessDetailDto getBusinessDetailsById(Long businessId) {
-		return businessRepository.fetchBusinessDetail(businessId);
+		return businessRepository.fetchBusinessDetail(businessId).orElseThrow(()-> new ErrorMessageException("businessId not found"));
+	}
+
+	@Override
+	public Optional<OnboardingDetailsDto> getBusinessDetailsByInviteId(String inviteId) {
+		return businessRepository.fetchBusinessDetailsByInviteId(inviteId);
 	}
 }

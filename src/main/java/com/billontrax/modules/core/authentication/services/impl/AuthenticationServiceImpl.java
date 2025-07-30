@@ -46,13 +46,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private LoginResponse generateToken(UserProfileDto userProfile) {
-        String accessToken = jwtTokenService.generateAccessToken(userProfile);
-        String refreshToken = jwtTokenService.generateRefreshToken(userProfile);
+        authenticationDetailsRepository.findByUserIdAndBusinessId(userProfile.getId(), userProfile.getBusinessId())
+                .ifPresent((details) -> {;
+                    authenticationDetailsRepository.deleteById(details.getId());
+                });
         AuthenticationDetails details = new AuthenticationDetails();
         details.setUserId(userProfile.getId());
-        details.setAccessToken(accessToken);
-        details.setRefreshToken(refreshToken);
-        authenticationDetailsRepository.save(details);
+        details.setBusinessId(userProfile.getBusinessId());
+        AuthenticationDetails saved = authenticationDetailsRepository.save(details);
+        String accessToken = jwtTokenService.generateAccessToken(saved.getId());
+        String refreshToken = jwtTokenService.generateRefreshToken(saved.getId(), userProfile.getId(), userProfile.getBusinessId());
         return new LoginResponse(accessToken, refreshToken, 3600);
     }
 

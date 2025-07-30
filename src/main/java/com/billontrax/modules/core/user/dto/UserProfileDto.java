@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserProfileDto {
     private Long id;
+    private Long businessId;
     private String name;
     private String email;
     private String phoneNumber;
@@ -37,6 +38,7 @@ public class UserProfileDto {
 
     public UserProfileDto(User user, Role role, Boolean isSuperAdmin) {
         this.id = user.getId();
+        this.businessId = user.getBusinessId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phoneNumber = user.getPhoneNumber();

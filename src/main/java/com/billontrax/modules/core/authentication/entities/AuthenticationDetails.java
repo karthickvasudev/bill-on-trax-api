@@ -18,9 +18,8 @@ import java.util.Date;
 @Table(name = "authentication_details")
 public class AuthenticationDetails extends CreatedTimestamp {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private Long userId;
-    private String accessToken;
-    private String refreshToken;
+    private Long businessId;
 }

@@ -12,5 +12,5 @@ import java.util.Date;
 @NoArgsConstructor
 public class ExtractedTokenDto {
     private Long userId;
-    private Date expiredAt;
+    private Long businessId;
 }
