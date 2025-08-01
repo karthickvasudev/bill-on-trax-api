@@ -227,7 +227,7 @@ values (0, 'Business Invite', 'BUSINESS_INVITE',
         Click below to get started with setting up your account:
       </div>
 
-      <a href="{{inviteLink}}" class="button">Create Account</a>
+      <a target="_blank" href="{{inviteLink}}" class="button">Create Account</a>
 
       <div class="footer">
         &copy; 2025 Bill on Trax. All rights reserved.<br />
@@ -243,8 +243,6 @@ create table stores
     id           bigint auto_increment primary key,
     business_id  bigint       not null,
     name         varchar(255) not null,
-    email        varchar(255) not null unique,
-    phone_number varchar(255) not null unique,
     address      varchar(255) null,
     city         varchar(255) null,
     state        varchar(255) null,
@@ -252,7 +250,8 @@ create table stores
     zip_code     varchar(255) null,
     logo_url     varchar(255) null,
     is_deleted   boolean      not null default false,
-    created_by   bigint       not null,
     created_time datetime     not null default current_timestamp,
-    updated_time datetime     null
-)
+    created_by   bigint       not null,
+    updated_time datetime     null,
+    updated_by   bigint       null
+);

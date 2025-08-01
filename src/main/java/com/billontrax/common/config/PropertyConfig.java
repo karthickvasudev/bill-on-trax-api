@@ -13,9 +13,4 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 public class PropertyConfig {
     private String AppUrl;
-    private String businessInviteEndpoint;
-
-    public String getBusinessInviteEndpoint() {
-        return this.AppUrl + this.businessInviteEndpoint;
-    }
 }

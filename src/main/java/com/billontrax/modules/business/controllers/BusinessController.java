@@ -4,11 +4,14 @@ import com.billontrax.common.dtos.Response;
 import com.billontrax.common.dtos.ResponseStatus;
 import com.billontrax.common.enums.ResponseCode;
 import com.billontrax.modules.business.dtos.BusinessDetailDto;
+import com.billontrax.modules.business.dtos.BusinessListDto;
 import com.billontrax.modules.business.dtos.CreateBusinessRequest;
 import com.billontrax.modules.business.entities.Business;
 import com.billontrax.modules.business.services.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/business")
@@ -37,6 +40,14 @@ public class BusinessController {
 		Response<BusinessDetailDto> response = new Response<>();
 		response.setStatus(new ResponseStatus(ResponseCode.OK));
 		response.setData(businessService.getBusinessDetailsById(businessId));
+		return response;
+	}
+
+	@GetMapping("list")
+	public Response<List<BusinessListDto>> searchBusiness() {
+		Response<List<BusinessListDto>> response = new Response<>();
+		response.setStatus(new ResponseStatus(ResponseCode.OK));
+		response.setData(businessService.searchBusiness());
 		return response;
 	}
 }

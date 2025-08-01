@@ -1,10 +1,10 @@
 package com.billontrax.modules.business.services;
 
-import com.billontrax.modules.business.dtos.BusinessDetailDto;
-import com.billontrax.modules.business.dtos.CreateBusinessRequest;
-import com.billontrax.modules.business.dtos.OnboardingDetailsDto;
+import com.billontrax.modules.business.dtos.*;
 import com.billontrax.modules.business.entities.Business;
+import com.billontrax.modules.business.enums.BusinessStatus;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BusinessService {
@@ -14,5 +14,11 @@ public interface BusinessService {
 
 	BusinessDetailDto getBusinessDetailsById(Long businessId);
 
-	Optional<OnboardingDetailsDto> getBusinessDetailsByInviteId(String inviteId);
+	Optional<OnboardingDetailsDto> getOnboardingDetailsByInviteId(String inviteId);
+
+	Business updateBusinessDetails(Long businessId, UpdateBusinessDetailsDto updateBusinessDetailsDto);
+
+	void updateBusinessStatus(Long id, BusinessStatus businessStatus);
+
+	List<BusinessListDto> searchBusiness();
 }

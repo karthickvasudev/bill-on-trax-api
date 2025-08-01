@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class FileUploadDto {
 	private String fileName;
-	private byte[] data;
+	private String dataPrefix;
+	private String data;
 }

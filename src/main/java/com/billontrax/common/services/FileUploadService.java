@@ -1,13 +1,17 @@
 package com.billontrax.common.services;
 
 import com.billontrax.common.dtos.FileUploadDto;
+import com.billontrax.common.exceptions.ErrorMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +30,15 @@ public class FileUploadService {
 		return upload(folderStructure, file);
 	}
 
-	@SneakyThrows
 	private String upload(String folderStructure, FileUploadDto file) {
-		String folderWithFile = "%s/%s".formatted(folderStructure, file.getFileName());
-		Files.createDirectories(Paths.get(folderStructure));
-		Files.write(Paths.get(folderWithFile), file.getData());
-		return environment.equals("dev") ? "http://localhost:8080/%s".formatted(folderWithFile) : null;
+		try {
+			String folderWithFile = "%s/%s".formatted(folderStructure,
+					System.currentTimeMillis() + "_" + file.getFileName());
+			Files.createDirectories(Paths.get(folderStructure));
+			Files.write(Paths.get(folderWithFile), Base64.getDecoder().decode(file.getData()));
+			return environment.equals("dev") ? "http://localhost:8080/%s".formatted(folderWithFile) : null;
+		} catch (Exception e) {
+			throw new ErrorMessageException("Failed to upload file: %s".formatted(e.getMessage()));
+		}
 	}
 }

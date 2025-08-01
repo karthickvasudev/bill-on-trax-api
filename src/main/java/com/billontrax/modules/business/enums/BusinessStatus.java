@@ -1,5 +1,5 @@
 package com.billontrax.modules.business.enums;
 
 public enum BusinessStatus {
-	INVITED, ACTIVE, INACTIVE, CREATED, DELETED
+	CREATED, INVITED, BUSINESS_DETAILS_UPDATED, OWNER_DETAILS_UPDATED, ACTIVE, INACTIVE, DELETED
 }

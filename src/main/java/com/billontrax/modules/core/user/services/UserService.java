@@ -6,8 +6,6 @@ import com.billontrax.modules.core.user.dto.UpdateUserInformationRequest;
 import com.billontrax.modules.core.user.dto.UserProfileDto;
 import com.billontrax.modules.core.user.entities.User;
 
-import java.math.BigInteger;
-
 public interface UserService {
 	UserProfileDto fetchProfile();
 
@@ -15,7 +13,7 @@ public interface UserService {
 
 	User createUser(CreateUserRequest body);
 
-	void updateUserInformation(Long userId, UpdateUserInformationRequest body);
+	User updateUserInformation(Long userId, UpdateUserInformationRequest body);
 
 	void updatePassword(Long userId, ResetPasswordRequest body);
 

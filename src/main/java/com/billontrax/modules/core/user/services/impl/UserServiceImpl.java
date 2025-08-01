@@ -58,13 +58,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInformation(Long userId, UpdateUserInformationRequest body) {
+    public User updateUserInformation(Long userId, UpdateUserInformationRequest body) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ErrorMessageException("user not found"));
-        user.setName(body.getFirstName());
-        user.setEmail(body.getEmail());
-        user.setPhoneNumber(body.getPhoneNumber());
-        user.setIsPasswordResetRequired(false);
-        userRepository.save(user);
+        if(Objects.nonNull(body.getName())){
+            user.setName(body.getName());
+        }
+        if(Objects.nonNull(body.getEmail())){
+            user.setEmail(body.getEmail());
+        }
+        if(Objects.nonNull(body.getPhoneNumber())){
+            user.setPhoneNumber(body.getPhoneNumber());
+        }
+        if(Objects.nonNull(body.getUsername())){
+            user.setUsername(body.getUsername());
+        }
+        if(Objects.nonNull(body.getPassword())){
+            user.setPassword(passwordEncoder.encode(body.getPassword()));
+            user.setIsPasswordResetRequired(false);
+        }
+        return userRepository.save(user);
     }
 
     @Override

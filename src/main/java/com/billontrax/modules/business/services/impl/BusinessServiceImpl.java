@@ -5,9 +5,7 @@ import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.common.services.EmailService;
 import com.billontrax.common.services.FileUploadService;
 import com.billontrax.common.utils.RandomUtil;
-import com.billontrax.modules.business.dtos.BusinessDetailDto;
-import com.billontrax.modules.business.dtos.CreateBusinessRequest;
-import com.billontrax.modules.business.dtos.OnboardingDetailsDto;
+import com.billontrax.modules.business.dtos.*;
 import com.billontrax.modules.business.entities.Business;
 import com.billontrax.modules.business.enums.BusinessStatus;
 import com.billontrax.modules.business.repositories.BusinessRepository;
@@ -22,7 +20,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -51,8 +51,8 @@ public class BusinessServiceImpl implements BusinessService {
 		business.setZipCode(body.getZipCode());
 		business.setStatus(BusinessStatus.CREATED);
 		Business save = businessRepository.save(business);
-		if (business.getLogoUrl() != null) {
-			String url = fileUploadService.uploadFile(save.getId(), "business", body.getLogo());
+		if (Objects.nonNull(body.getLogo())) {
+			String url = fileUploadService.uploadFile(save.getId(), "business/logo", body.getLogo());
 			save.setLogoUrl(url);
 			business = businessRepository.saveAndFlush(save);
 		}
@@ -82,11 +82,50 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public BusinessDetailDto getBusinessDetailsById(Long businessId) {
-		return businessRepository.fetchBusinessDetail(businessId).orElseThrow(()-> new ErrorMessageException("businessId not found"));
+		return businessRepository.fetchBusinessDetail(businessId).orElseThrow(
+				() -> new ErrorMessageException("your information is invalid. Please try again or contact support."));
 	}
 
 	@Override
-	public Optional<OnboardingDetailsDto> getBusinessDetailsByInviteId(String inviteId) {
-		return businessRepository.fetchBusinessDetailsByInviteId(inviteId);
+	public Optional<OnboardingDetailsDto> getOnboardingDetailsByInviteId(String inviteId) {
+		return businessRepository.fetchOnboardingDetailsByInviteId(inviteId);
+	}
+
+	@Override
+	public Business updateBusinessDetails(Long businessId, UpdateBusinessDetailsDto updateBusinessDetailsDto) {
+		Business business = businessRepository.findById(businessId).orElseThrow(
+				() -> new ErrorMessageException("your information is invalid. Please try again or contact support."));
+		business.setName(updateBusinessDetailsDto.getName());
+		business.setEmail(updateBusinessDetailsDto.getEmail());
+		business.setPhoneNumber(updateBusinessDetailsDto.getPhoneNumber());
+		business.setAddress(updateBusinessDetailsDto.getAddress());
+		business.setCity(updateBusinessDetailsDto.getCity());
+		business.setState(updateBusinessDetailsDto.getState());
+		business.setZipCode(updateBusinessDetailsDto.getZipCode());
+		business.setStatus(BusinessStatus.BUSINESS_DETAILS_UPDATED);
+		if (Objects.nonNull(updateBusinessDetailsDto.getLogo())) {
+			String url = fileUploadService.uploadFile(business.getId(), "business", "logo",
+					updateBusinessDetailsDto.getLogo());
+			business.setLogoUrl(url);
+		}
+		if(updateBusinessDetailsDto.getIsDeleteLogo()) {
+			business.setLogoUrl(null);
+		}
+		return businessRepository.save(business);
+	}
+
+	@Override
+	public void updateBusinessStatus(Long id, BusinessStatus businessStatus) {
+		businessRepository.findById(id).ifPresentOrElse(business -> {
+			business.setStatus(businessStatus);
+			businessRepository.save(business);
+		}, () -> {
+			throw new ErrorMessageException("your information is invalid. Please try again or contact support.");
+		});
+	}
+
+	@Override
+	public List<BusinessListDto> searchBusiness() {
+		return businessRepository.searchBusiness();
 	}
 }

@@ -71,8 +71,8 @@ public class SecurityConfig {
 			});
 		});
 		security.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-			authorizationManagerRequestMatcherRegistry.requestMatchers("/api/auth/login/**", "/api/onboarding/**")
-					.permitAll();
+			authorizationManagerRequestMatcherRegistry.requestMatchers("/api/auth/login/**", "/api/onboarding/**",
+					"/files/**").permitAll();
 			authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
 		});
 		security.sessionManagement(httpSecuritySessionManagementConfigurer -> {
@@ -100,13 +100,17 @@ public class SecurityConfig {
 					String token = request.getHeader("x-auth-token");
 					String refreshToken = request.getHeader("x-auth-refresh-token");
 					if (Strings.isEmpty(token) || Strings.isEmpty(refreshToken)) {
-						throw new UnAuthorizedException("Access denied. Please log in to continue.");
+						doFilter(request, response, filterChain);
+						return;
 					}
 
 					/* refresh token */
 					if (jwtTokenService.isTokenNotExpired(refreshToken)) {
 
 						String authId = jwtTokenService.getAuthId(token);
+						if (authenticationDetailsRepository.findById(authId).isEmpty()) {
+							throw new UnAuthorizedException("Access denied. Please log in to continue.");
+						}
 						/* access token */
 						if (jwtTokenService.isTokenNotExpired(token)) {
 							authenticateAndSetCurrentUser(token);
@@ -134,13 +138,15 @@ public class SecurityConfig {
 					Response<Void> apiResponse = new Response<>();
 					apiResponse.setStatus(new ResponseStatus(ResponseCode.SERVER_ERROR));
 					response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+				} finally {
+					CurrentUserHolder.clear();
 				}
 			}
 
 			@Override
 			protected boolean shouldNotFilter(HttpServletRequest request) {
-				return request.getRequestURI().equals("/api/auth/login") || request.getRequestURI()
-						.startsWith("/api/onboarding");
+				String uri = request.getRequestURI();
+				return uri.equals("/api/auth/login") || uri.startsWith("/api/onboarding") || uri.startsWith("/files/");
 			}
 		};
 	}
@@ -184,6 +190,7 @@ public class SecurityConfig {
 		authenticationDetails.setBusinessId(extractedToken.getBusinessId());
 		AuthenticationDetails saved = authenticationDetailsRepository.save(authenticationDetails);
 		String accessToken = jwtTokenService.generateAccessToken(saved.getId());
+		authenticateAndSetCurrentUser(accessToken);
 		response.setHeader("x-auth-token", accessToken);
 		response.setHeader("x-auth-refresh-token", refreshToken);
 	}

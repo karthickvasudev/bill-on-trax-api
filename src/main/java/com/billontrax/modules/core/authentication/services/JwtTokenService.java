@@ -23,7 +23,7 @@ public class JwtTokenService {
                 .withIssuer("bill-on-trax-application")
                 .withSubject(String.valueOf(authId))
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date().toInstant().plus(1, ChronoUnit.HOURS))
+                .withExpiresAt(new Date().toInstant().plus(15, ChronoUnit.MINUTES))
                 .sign(algorithm);
     }
 

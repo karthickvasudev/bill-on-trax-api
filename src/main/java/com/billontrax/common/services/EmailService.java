@@ -24,7 +24,7 @@ public class EmailService {
 	private void saveEmailInLocal(String body) {
 		FileUploadDto fileUploadDto = new FileUploadDto();
 		fileUploadDto.setFileName("local-email-" + System.currentTimeMillis() + ".html");
-		fileUploadDto.setData(body.getBytes());
+		fileUploadDto.setData(body);
 		fileUploadService.uploadFile(0L, "local-email", fileUploadDto);
 	}
 

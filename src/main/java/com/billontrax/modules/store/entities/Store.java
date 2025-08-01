@@ -1,6 +1,6 @@
 package com.billontrax.modules.store.entities;
 
-import com.billontrax.common.entities.Timestamped;
+import com.billontrax.common.entities.TimestampedWithUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,14 +13,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Store extends Timestamped {
+public class Store extends TimestampedWithUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long businessId;
 	private String name;
-	private String email;
-	private String phoneNumber;
 	private String address;
 	private String city;
 	private String state;
@@ -28,7 +26,6 @@ public class Store extends Timestamped {
 	private String zipCode;
 	private String logoUrl;
 	private Boolean isDeleted = false;
-	private Long createdBy;
 }
 
 
