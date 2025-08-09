@@ -1,20 +1,26 @@
 package com.billontrax.common.config;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import com.billontrax.common.dtos.Response;
 import com.billontrax.common.dtos.ResponseStatus;
 import com.billontrax.common.enums.ResponseCode;
 import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.common.exceptions.UnAuthorizedException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
+import lombok.extern.slf4j.Slf4j;
+
+@RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandlerConfig extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandlerConfig {
 
     @ExceptionHandler(value = ErrorMessageException.class)
     protected ResponseEntity<Response<Void>> handleErrorResponseException(ErrorMessageException e) {
@@ -30,9 +36,22 @@ public class GlobalExceptionHandlerConfig extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationErrors(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .toList();
+
+        Response<Void> response = new Response<>();
+        response.setStatus(new ResponseStatus(ResponseCode.ERROR, String.join("\n", errors)));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Response<Void>> handleUndefinedException(Exception e) {
-        log.error("Error handleUndefinedException:: ", e);
+        log.error("Error handle UndefinedException:: ", e);
         Response<Void> response = new Response<>();
         response.setStatus(new ResponseStatus(ResponseCode.SERVER_ERROR));
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

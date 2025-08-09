@@ -16,9 +16,10 @@ import java.util.Date;
 @Service
 @AllArgsConstructor
 public class JwtTokenService {
-    private final Algorithm algorithm = Algorithm.HMAC256("bill-on-trax bill-on-trax bill-on-trax bill-on-trax bill-on-trax");
+    private final Algorithm algorithm = Algorithm
+            .HMAC256("bill-on-trax bill-on-trax bill-on-trax bill-on-trax bill-on-trax");
 
-    public String generateAccessToken(String authId){
+    public String generateAccessToken(String authId) {
         return JWT.create()
                 .withIssuer("bill-on-trax-application")
                 .withSubject(String.valueOf(authId))
@@ -27,7 +28,7 @@ public class JwtTokenService {
                 .sign(algorithm);
     }
 
-    public String generateRefreshToken(String authId, Long id, Long businessId){
+    public String generateRefreshToken(String authId, Long id, Long businessId) {
         return JWT.create()
                 .withIssuer("bill-on-trax-application")
                 .withSubject(authId)

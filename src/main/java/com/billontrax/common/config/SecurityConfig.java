@@ -144,7 +144,7 @@ public class SecurityConfig {
 			}
 
 			@Override
-			protected boolean shouldNotFilter(HttpServletRequest request) {
+			protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
 				String uri = request.getRequestURI();
 				return uri.equals("/api/auth/login") || uri.startsWith("/api/onboarding") || uri.startsWith("/files/");
 			}
@@ -172,7 +172,7 @@ public class SecurityConfig {
 		AuthenticationDetails authenticationDetails = authenticationDetailsRepository.findById(authId)
 				.orElseThrow(() -> new UsernameNotFoundException("Access denied. Please log in to continue."));
 		UserProfileDto userProfileDto = userRepository.fetchUserProfileById(authenticationDetails.getUserId(),
-						authenticationDetails.getBusinessId())
+				authenticationDetails.getBusinessId())
 				.orElseThrow(() -> new UsernameNotFoundException("Access denied. Please log in to continue."));
 		List<UserPermissionDto> permissions = permissionService.getPermissions(userProfileDto.getId());
 		userProfileDto.setUserPermissions(permissions);
