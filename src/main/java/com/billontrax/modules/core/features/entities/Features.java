@@ -16,4 +16,5 @@ public class Features {
 	private Long id;
 	private String name;
 	private String featureCode;
+	private boolean isCustomFieldSupport;
 }

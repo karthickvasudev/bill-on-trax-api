@@ -310,3 +310,56 @@ values (2, 2, 5),
        (2, 2, 6),
        (2, 2, 7),
        (2, 2, 8);
+
+insert into features (name, feature_code)
+values ('Custom Fields', 'CUSTOM_FIELDS');
+
+insert into permission_feature_permission_group_map (permission_group_id, feature_id, permission_id)
+values (3, 3, 9),
+       (3, 3, 10),
+       (3, 3, 11),
+       (3, 3, 12);
+
+-- custom_field_definition table
+CREATE TABLE custom_field_definition (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    module VARCHAR(50) NOT NULL,
+    store_id BIGINT NOT NULL,
+    field_name VARCHAR(100) NOT NULL,
+    field_type VARCHAR(20) NOT NULL,
+    is_required BOOLEAN NOT NULL,
+    default_value TEXT,
+    options JSON,
+    created_time TIMESTAMP,
+    updated_time TIMESTAMP,
+    created_by BIGINT,
+    updated_by BIGINT
+);
+
+-- custom_field_value table
+CREATE TABLE custom_field_value (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    custom_field_id BIGINT NOT NULL,
+    record_id BIGINT NOT NULL,
+    value TEXT,
+    FOREIGN KEY (custom_field_id) REFERENCES custom_field_definition(id)
+);
+
+CREATE INDEX idx_custom_field_definition_module_store
+    ON custom_field_definition (module, store_id);
+
+-- Index to quickly find all values for a record (e.g., all custom fields for a customer/product/order)
+CREATE INDEX idx_custom_field_value_record
+    ON custom_field_value (record_id);
+
+-- Index to quickly find all values for a custom field (useful for reporting/analytics)
+CREATE INDEX idx_custom_field_value_custom_field
+    ON custom_field_value (custom_field_id);
+
+-- Composite index for frequent queries filtering by custom_field_id and record_id together
+CREATE INDEX idx_custom_field_value_field_record
+    ON custom_field_value (custom_field_id, record_id);
+
+alter table features add column is_custom_field_support boolean default false;
+
+update features set is_custom_field_support = 1 where feature_code = 'CUSTOMER';
