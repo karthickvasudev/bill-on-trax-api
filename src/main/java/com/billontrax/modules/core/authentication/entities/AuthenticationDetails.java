@@ -1,14 +1,16 @@
 package com.billontrax.modules.core.authentication.entities;
 
 import com.billontrax.common.entities.CreatedTimestamp;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.math.BigInteger;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor

@@ -1,14 +1,14 @@
 package com.billontrax.modules.business.dtos;
 
+import java.util.Date;
+
 import com.billontrax.modules.business.enums.BusinessStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

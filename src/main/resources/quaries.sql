@@ -257,44 +257,47 @@ create table stores
 );
 
 -- customer table
-CREATE TABLE customers (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    business_id BIGINT NOT NULL,
-    customer_code VARCHAR(64) NULL UNIQUE,
-    type VARCHAR(16) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255),
-    phone VARCHAR(32),
-    alternate_phone VARCHAR(32),
-    billing_address TEXT,
-    shipping_address TEXT,
-    tax_id VARCHAR(64),
-    outstanding_limit DECIMAL(19,2),
-    note TEXT,
-    created_by BIGINT NOT NULL,
-    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_by BIGINT NULL,
-    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE
+CREATE TABLE customers
+(
+    id                BIGINT PRIMARY KEY AUTO_INCREMENT,
+    business_id       BIGINT       NOT NULL,
+    customer_code     VARCHAR(64)  NULL UNIQUE,
+    type              VARCHAR(16)  NOT NULL,
+    name              VARCHAR(255) NOT NULL,
+    email             VARCHAR(255),
+    phone             VARCHAR(32),
+    alternate_phone   VARCHAR(32),
+    billing_address   TEXT,
+    shipping_address  TEXT,
+    tax_id            VARCHAR(64),
+    outstanding_limit DECIMAL(19, 2),
+    note              TEXT,
+    created_by        BIGINT       NOT NULL,
+    created_time      TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
+    updated_by        BIGINT       NULL,
+    updated_time      TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_deleted        BOOLEAN      NOT NULL DEFAULT FALSE
 );
 
-ALTER TABLE customer_contact_person
-ADD CONSTRAINT fk_contact_person_customer
-FOREIGN KEY (customer_id) REFERENCES customers(id);
+
+CREATE TABLE customer_contacts
+(
+    id          BIGINT primary key AUTO_INCREMENT,
+    name        VARCHAR(100) NOT NULL,
+    email       VARCHAR(100),
+    phone       VARCHAR(20),
+    customer_id BIGINT       NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE
+);
+
+ALTER TABLE customer_contacts
+    ADD CONSTRAINT fk_contact_person_customer
+        FOREIGN KEY (customer_id) REFERENCES customers (id);
 
 CREATE UNIQUE INDEX idx_customers_business_phone
-ON customers (business_id, phone);
+    ON customers (business_id, phone);
 
-CREATE TABLE customer_contacts (
-  id BIGINT primary key AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(100),
-  phone VARCHAR(20),
-  customer_id BIGINT NOT NULL,
-  FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
-);
-
-CREATE INDEX idx_customer_contact ON customer_contacts(customer_id);
+CREATE INDEX idx_customer_contact ON customer_contacts (customer_id);
 
 insert into features (name, feature_code)
 values ('Customer', 'CUSTOMER');
@@ -321,28 +324,30 @@ values (3, 3, 9),
        (3, 3, 12);
 
 -- custom_field_definition table
-CREATE TABLE custom_field_definition (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    module VARCHAR(50) NOT NULL,
-    store_id BIGINT NOT NULL,
-    field_name VARCHAR(100) NOT NULL,
-    field_type VARCHAR(20) NOT NULL,
-    is_required BOOLEAN NOT NULL,
+CREATE TABLE custom_field_definition
+(
+    id            BIGINT PRIMARY KEY AUTO_INCREMENT,
+    module        VARCHAR(50)  NOT NULL,
+    store_id      BIGINT       NOT NULL,
+    field_name    VARCHAR(100) NOT NULL,
+    field_type    VARCHAR(20)  NOT NULL,
+    is_required   BOOLEAN      NOT NULL,
     default_value TEXT,
-    options JSON,
-    created_time TIMESTAMP,
-    updated_time TIMESTAMP,
-    created_by BIGINT,
-    updated_by BIGINT
+    options       JSON,
+    created_time  TIMESTAMP,
+    updated_time  TIMESTAMP,
+    created_by    BIGINT,
+    updated_by    BIGINT
 );
 
 -- custom_field_value table
-CREATE TABLE custom_field_value (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE custom_field_value
+(
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT,
     custom_field_id BIGINT NOT NULL,
-    record_id BIGINT NOT NULL,
-    value TEXT,
-    FOREIGN KEY (custom_field_id) REFERENCES custom_field_definition(id)
+    record_id       BIGINT NOT NULL,
+    value           TEXT,
+    FOREIGN KEY (custom_field_id) REFERENCES custom_field_definition (id)
 );
 
 CREATE INDEX idx_custom_field_definition_module_store
@@ -360,6 +365,9 @@ CREATE INDEX idx_custom_field_value_custom_field
 CREATE INDEX idx_custom_field_value_field_record
     ON custom_field_value (custom_field_id, record_id);
 
-alter table features add column is_custom_field_support boolean default false;
+alter table features
+    add column is_custom_field_support boolean default false;
 
-update features set is_custom_field_support = 1 where feature_code = 'CUSTOMER';
+update features
+set is_custom_field_support = 1
+where feature_code = 'CUSTOMER';

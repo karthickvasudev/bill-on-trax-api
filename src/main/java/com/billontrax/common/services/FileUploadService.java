@@ -1,17 +1,16 @@
 package com.billontrax.common.services;
 
-import com.billontrax.common.dtos.FileUploadDto;
-import com.billontrax.common.exceptions.ErrorMessageException;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.billontrax.common.dtos.FileUploadDto;
+import com.billontrax.common.exceptions.ErrorMessageException;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

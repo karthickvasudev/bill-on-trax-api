@@ -1,12 +1,12 @@
 package com.billontrax.common.entities;
 
+import java.util.Date;
+
 import com.billontrax.common.config.CurrentUserHolder;
+
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @MappedSuperclass

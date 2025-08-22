@@ -1,5 +1,10 @@
 package com.billontrax.modules.business.services.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.modules.business.dtos.OnboardingDetailsDto;
 import com.billontrax.modules.business.dtos.UpdateBusinessDetailsDto;
@@ -9,13 +14,9 @@ import com.billontrax.modules.business.services.OnboardingService;
 import com.billontrax.modules.core.user.dto.UpdateUserInformationRequest;
 import com.billontrax.modules.core.user.services.UserService;
 import com.billontrax.modules.store.dtos.CreateStoreDto;
-import com.billontrax.modules.store.entities.Store;
 import com.billontrax.modules.store.services.StoreService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +58,7 @@ public class OnboardingServiceImpl implements OnboardingService {
 		OnboardingDetailsDto onboardingDetails = getOnboardingDetailsByInviteId(inviteId);
 		for (CreateStoreDto createStoreDto : createStoreDtos) {
 			createStoreDto.setBusinessId(onboardingDetails.getBusiness().getId());
-			Store store = storeService.createStore(createStoreDto);
+			storeService.createStore(createStoreDto);
 		}
 		businessService.updateBusinessStatus(onboardingDetails.getBusiness().getId(), BusinessStatus.ACTIVE);
 	}

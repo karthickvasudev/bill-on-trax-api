@@ -69,4 +69,12 @@ public class Customer extends TimestampedWithUser {
         contacts.remove(contact);
         contact.setCustomer(null);
     }
+
+    public List<CustomerContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<CustomerContact> contacts) {
+        this.contacts = contacts;
+    }
 }

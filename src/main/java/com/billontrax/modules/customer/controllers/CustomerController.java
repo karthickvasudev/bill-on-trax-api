@@ -1,7 +1,5 @@
 package com.billontrax.modules.customer.controllers;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.billontrax.common.dtos.Response;
 import com.billontrax.common.dtos.ResponseStatus;
 import com.billontrax.common.enums.ResponseCode;
-import com.billontrax.common.exceptions.ErrorMessageException;
 import com.billontrax.modules.customer.dtos.CustomerContactDto;
 import com.billontrax.modules.customer.dtos.CustomerCreateRequest;
 import com.billontrax.modules.customer.dtos.CustomerDto;

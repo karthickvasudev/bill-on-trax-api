@@ -1,6 +1,8 @@
 package com.billontrax.modules.customer.mappers;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import com.billontrax.modules.customer.dtos.CustomerContactDto;
 import com.billontrax.modules.customer.dtos.CustomerCreateRequest;
@@ -12,7 +14,7 @@ import com.billontrax.modules.customer.entities.CustomerContact;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
-    @Mapping(target = "contacts", source = "contacts")
+    @Mapping(source = "contacts", target = "contacts")
     CustomerDto toDto(Customer entity);
 
     Customer toEntity(CustomerCreateRequest request);

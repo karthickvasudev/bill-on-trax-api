@@ -1,9 +1,8 @@
 package com.billontrax.modules.core.role.repositories;
 
-import com.billontrax.modules.core.role.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.math.BigInteger;
+import com.billontrax.modules.core.role.entities.Role;
 
 public interface RolesRepository extends JpaRepository<Role, Long> {
 
