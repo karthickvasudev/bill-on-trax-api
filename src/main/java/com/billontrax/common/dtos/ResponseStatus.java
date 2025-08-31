@@ -3,19 +3,22 @@ package com.billontrax.common.dtos;
 import com.billontrax.common.enums.ResponseCode;
 import lombok.Data;
 
-
 @Data
 public class ResponseStatus {
-    private final Integer code;
-    private final String message;
+    private Integer code;
+    private String message;
 
-    public ResponseStatus(ResponseCode code) {
-        this.code = code.getCode();
-        this.message = code.getDefaultMessage();
+    public static ResponseStatus of(ResponseCode code) {
+        ResponseStatus status = new ResponseStatus();
+        status.code = code.getCode();
+        status.message = code.getDefaultMessage();
+        return status;
     }
 
-    public ResponseStatus(ResponseCode code, String message) {
-        this.code = code.getCode();
-        this.message = message;
+    public static ResponseStatus of(ResponseCode code, String message) {
+        ResponseStatus status = new ResponseStatus();
+        status.code = code.getCode();
+        status.message = message;
+        return status;
     }
 }

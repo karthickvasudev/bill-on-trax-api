@@ -19,34 +19,30 @@ import java.util.List;
 public class BusinessController {
 	private final BusinessService businessService;
 
-	@PostMapping("create")
+	@PostMapping
 	public Response<Business> createBusiness(@RequestBody CreateBusinessRequest body) {
-		Response<Business> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.CREATED));
+		Response<Business> response = new Response<>(ResponseStatus.of(ResponseCode.CREATED));
 		response.setData(businessService.createBusiness(body));
 		return response;
 	}
 
 	@PutMapping("{businessId}/invite")
 	public Response<Void> inviteBusiness(@PathVariable Long businessId){
-		Response<Void> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK_NOTIFY, "Invite sent successfully"));
+		Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY, "Invite sent successfully"));
 		businessService.sendBusinessInvite(businessId);
 		return response;
 	}
 
 	@GetMapping("{businessId}")
 	public Response<BusinessDetailDto> getBusiness(@PathVariable Long businessId){
-		Response<BusinessDetailDto> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK));
+		Response<BusinessDetailDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
 		response.setData(businessService.getBusinessDetailsById(businessId));
 		return response;
 	}
 
-	@GetMapping("list")
+	@GetMapping("search")
 	public Response<List<BusinessListDto>> searchBusiness() {
-		Response<List<BusinessListDto>> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK));
+		Response<List<BusinessListDto>> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
 		response.setData(businessService.searchBusiness());
 		return response;
 	}

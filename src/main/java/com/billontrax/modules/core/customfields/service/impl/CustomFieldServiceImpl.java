@@ -5,6 +5,7 @@ import com.billontrax.modules.core.customfields.dto.CustomFieldValueDto;
 import com.billontrax.modules.core.customfields.entity.CustomFieldDefinition;
 import com.billontrax.modules.core.customfields.entity.CustomFieldType;
 import com.billontrax.modules.core.customfields.entity.CustomFieldValue;
+import com.billontrax.modules.core.customfields.enums.CustomFieldModule;
 import com.billontrax.modules.core.customfields.mapper.CustomFieldDefinitionMapper;
 import com.billontrax.modules.core.customfields.mapper.CustomFieldValueMapper;
 import com.billontrax.modules.core.customfields.repository.CustomFieldDefinitionRepository;
@@ -39,14 +40,10 @@ public class CustomFieldServiceImpl implements CustomFieldService {
 
     @Override
     public CustomFieldDefinitionDto updateDefinition(Long id, CustomFieldDefinitionDto dto) {
-        CustomFieldDefinition entity = definitionRepo.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Custom field not found"));
-        entity.setFieldName(dto.getFieldName());
-        entity.setFieldType(dto.getFieldType());
-        entity.setIsRequired(dto.getIsRequired());
-        entity.setDefaultValue(dto.getDefaultValue());
-        entity.setOptions(dto.getOptions());
-        return definitionMapper.toDto(definitionRepo.save(entity));
+    CustomFieldDefinition entity = definitionRepo.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Custom field not found"));
+    definitionMapper.updateFromDto(dto, entity);
+    return definitionMapper.toDto(definitionRepo.save(entity));
     }
 
     @Override
@@ -55,15 +52,15 @@ public class CustomFieldServiceImpl implements CustomFieldService {
     }
 
     @Override
-    public List<CustomFieldDefinitionDto> listDefinitions(String module, Long storeId) {
-        return definitionRepo.findByModuleAndStoreId(module, storeId)
+    public List<CustomFieldDefinitionDto> listDefinitions(CustomFieldModule module, Long storeId) {
+        return definitionRepo.findByModuleAndBusinessId(module, storeId)
                 .stream().map(definitionMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void saveFieldValues(String module, Long storeId, Long recordId, List<CustomFieldValueDto> values) {
-        List<CustomFieldDefinition> definitions = definitionRepo.findByModuleAndStoreId(module, storeId);
+    public void saveFieldValues(CustomFieldModule module, Long storeId, Long recordId, List<CustomFieldValueDto> values) {
+        List<CustomFieldDefinition> definitions = definitionRepo.findByModuleAndBusinessId(module, storeId);
         Map<Long, CustomFieldDefinition> defMap = definitions.stream()
                 .collect(Collectors.toMap(CustomFieldDefinition::getId, d -> d));
 
@@ -101,12 +98,12 @@ public class CustomFieldServiceImpl implements CustomFieldService {
     }
 
     @Override
-    public List<CustomFieldValueDto> getFieldValues(String module, Long storeId, Long recordId) {
-        List<CustomFieldDefinition> definitions = definitionRepo.findByModuleAndStoreId(module, storeId);
-        List<Long> fieldIds = definitions.stream().map(CustomFieldDefinition::getId).collect(Collectors.toList());
+    public List<CustomFieldValueDto> getFieldValues(CustomFieldModule module, Long storeId, Long recordId) {
+        List<CustomFieldDefinition> definitions = definitionRepo.findByModuleAndBusinessId(module, storeId);
+        List<Long> fieldIds = definitions.stream().map(CustomFieldDefinition::getId).toList();
         List<CustomFieldValue> values = valueRepo.findByRecordId(recordId).stream()
                 .filter(v -> fieldIds.contains(v.getCustomField().getId()))
-                .collect(Collectors.toList());
+                .toList();
         return values.stream().map(valueMapper::toDto).collect(Collectors.toList());
     }
 
@@ -118,17 +115,17 @@ public class CustomFieldServiceImpl implements CustomFieldService {
                 case NUMBER:
                     Double.parseDouble(value);
                     break;
-                case DATE:
-                    java.time.LocalDate.parse(value);
-                    break;
-                case CHECKBOX:
-                    if (!("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)))
-                        throw new ValidationException("Invalid checkbox value");
-                    break;
-                case TEXT:
-                case SELECT:
-                    // No validation needed
-                    break;
+                // case DATE:
+                //     java.time.LocalDate.parse(value);
+                //     break;
+                // case CHECKBOX:
+                //     if (!("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)))
+                //         throw new ValidationException("Invalid checkbox value");
+                //     break;
+                // case TEXT:
+                // case SELECT:
+                //     // No validation needed
+                //     break;
             }
         } catch (Exception e) {
             throw new ValidationException("Invalid value for type " + type + ": " + value);

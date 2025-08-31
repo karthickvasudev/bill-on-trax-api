@@ -13,7 +13,7 @@ public interface UserService {
 
 	User createUser(CreateUserRequest body);
 
-	User updateUserInformation(Long userId, UpdateUserInformationRequest body);
+	void updateUserInformation(Long userId, UpdateUserInformationRequest body);
 
 	void updatePassword(Long userId, ResetPasswordRequest body);
 

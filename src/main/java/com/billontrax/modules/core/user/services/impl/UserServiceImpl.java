@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserInformation(Long userId, UpdateUserInformationRequest body) {
+    public void updateUserInformation(Long userId, UpdateUserInformationRequest body) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ErrorMessageException("user not found"));
         if(Objects.nonNull(body.getName())){
             user.setName(body.getName());
@@ -70,13 +70,16 @@ public class UserServiceImpl implements UserService {
             user.setPhoneNumber(body.getPhoneNumber());
         }
         if(Objects.nonNull(body.getUsername())){
+            if(userRepository.countByUsername(body.getUsername()) > 0){
+                throw new ErrorMessageException("username already taken");
+            }
             user.setUsername(body.getUsername());
         }
         if(Objects.nonNull(body.getPassword())){
             user.setPassword(passwordEncoder.encode(body.getPassword()));
             user.setIsPasswordResetRequired(false);
         }
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override

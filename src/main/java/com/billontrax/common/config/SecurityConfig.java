@@ -128,15 +128,13 @@ public class SecurityConfig {
 					log.info("error in jwt validation filter:: ", e);
 					response.setStatus(ResponseCode.UNAUTHORIZED.getCode());
 					response.setHeader("content-type", "application/json");
-					Response<Void> apiResponse = new Response<>();
-					apiResponse.setStatus(new ResponseStatus(ResponseCode.UNAUTHORIZED, e.getMessage()));
+					Response<Void> apiResponse = new Response<>(ResponseStatus.of(ResponseCode.UNAUTHORIZED, e.getMessage()));
 					response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
 				} catch (JWTDecodeException e) {
 					log.info("error in jwt validation filter:: ", e);
 					response.setStatus(ResponseCode.SERVER_ERROR.getCode());
 					response.setHeader("content-type", "application/json");
-					Response<Void> apiResponse = new Response<>();
-					apiResponse.setStatus(new ResponseStatus(ResponseCode.SERVER_ERROR));
+					Response<Void> apiResponse = new Response<>(ResponseStatus.of(ResponseCode.SERVER_ERROR));
 					response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
 				} finally {
 					CurrentUserHolder.clear();

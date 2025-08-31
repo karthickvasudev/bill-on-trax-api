@@ -20,8 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("login")
     public Response<LoginResponse> login(@RequestBody LoginRequest body) {
-        Response<LoginResponse> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.OK, "Login successful"));
+        Response<LoginResponse> response = new Response<>(ResponseStatus.of(ResponseCode.OK, "Login successful"));
         response.setData(authenticationService.login(body));
         return response;
     }

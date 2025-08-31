@@ -17,16 +17,14 @@ public class UserController {
 
     @GetMapping("profile")
     public Response<UserProfileDto> getProfile() {
-        Response<UserProfileDto> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.OK));
+        Response<UserProfileDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
         response.setData(userService.fetchProfile());
         return response;
     }
 
     @PutMapping("reset-password")
     public Response<Void> resetPassword(@RequestBody ResetPasswordRequest body){
-        Response<Void> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.OK_NOTIFY, "Password reset successfully. Please log in."));
+        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY, "Password reset successfully. Please log in."));
         userService.resetPassword(body);
         return response;
     }

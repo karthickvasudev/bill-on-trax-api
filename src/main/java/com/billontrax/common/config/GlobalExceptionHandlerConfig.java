@@ -22,36 +22,31 @@ public class GlobalExceptionHandlerConfig {
 
     @ExceptionHandler(value = ErrorMessageException.class)
     protected ResponseEntity<Response<Void>> handleErrorResponseException(ErrorMessageException e) {
-        Response<Void> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.ERROR, e.getMessage()));
+        log.error("Error message:: {}", e.getMessage(), e);
+        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.ERROR, e.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = UnAuthorizedException.class)
     protected ResponseEntity<Response<Void>> handleUnAuthorizedException(UnAuthorizedException e) {
-        Response<Void> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.UNAUTHORIZED, e.getMessage()));
+        log.error("Unauthorized error:: {}", e.getMessage(), e);
+        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.UNAUTHORIZED, e.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .toList();
-
-        Response<Void> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.ERROR, String.join("\n", errors)));
+        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
+        log.error("Validation error:: {}", ex.getMessage(), ex);
+        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.ERROR, String.join("\n", errors)));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Response<Void>> handleUndefinedException(Exception e) {
-        log.error("Error handle UndefinedException:: ", e);
-        Response<Void> response = new Response<>();
-        response.setStatus(new ResponseStatus(ResponseCode.SERVER_ERROR));
+        log.error("Error handle UndefinedException:: {}", e.getMessage(), e);
+        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.SERVER_ERROR));
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

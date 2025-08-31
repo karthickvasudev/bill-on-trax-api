@@ -21,8 +21,7 @@ public class OnboardingController {
 
 	@GetMapping("{inviteId}")
 	public Response<OnboardingDetailsDto> fetchOnboardingDetailsByInviteId(@PathVariable String inviteId) {
-		Response<OnboardingDetailsDto> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK, "Onboarding details fetched successfully"));
+		Response<OnboardingDetailsDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK, "Onboarding details fetched successfully"));
 		response.setData(onboardingService.getOnboardingDetailsByInviteId(inviteId));
 		return response;
 	}
@@ -30,8 +29,7 @@ public class OnboardingController {
 	@PutMapping("{inviteId}/update-business")
 	public Response<OnboardingDetailsDto> updateBusinessDetails(@PathVariable String inviteId,
 			@RequestBody UpdateBusinessDetailsDto updateBusinessDetailsDto) {
-		Response<OnboardingDetailsDto> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK, "Business details updated successfully"));
+		Response<OnboardingDetailsDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK, "Business details updated successfully"));
 		response.setData(onboardingService.updateBusinessDetails(inviteId, updateBusinessDetailsDto));
 		return response;
 	}
@@ -39,8 +37,7 @@ public class OnboardingController {
 	@PutMapping("{inviteId}/update-owner-details")
 	public Response<OnboardingDetailsDto> updateOwnerDetails(@PathVariable String inviteId,
 			@RequestBody UpdateUserInformationRequest updateUserInformationDto) {
-		Response<OnboardingDetailsDto> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK, "Owner details updated successfully"));
+		Response<OnboardingDetailsDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK, "Owner details updated successfully"));
 		response.setData(onboardingService.updateOwnerDetails(inviteId, updateUserInformationDto));
 		return response;
 	}
@@ -48,8 +45,7 @@ public class OnboardingController {
 	@PostMapping("{inviteId}/create-stores")
 	public Response<Void> createStores(@PathVariable String inviteId,
 			@RequestBody List<CreateStoreDto> createStoreDtos) {
-		Response<Void> response = new Response<>();
-		response.setStatus(new ResponseStatus(ResponseCode.OK_NOTIFY, "Stores created successfully. please login to continue."));
+		Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY, "Stores created successfully. please login to continue."));
 		onboardingService.createStores(inviteId, createStoreDtos);
 		return response;
 	}
