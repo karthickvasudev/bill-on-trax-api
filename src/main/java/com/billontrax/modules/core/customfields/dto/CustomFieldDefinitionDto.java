@@ -8,11 +8,11 @@ import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Date;
+
 @Data
 public class CustomFieldDefinitionDto {
     private Long id;
-    @NotNull(message = "businessId must not be null")
-    private Long businessId;
     @NotNull(message = "module must not be null")
     private CustomFieldModule module;
     @NotBlank(message = "fieldName must not be blank")
@@ -21,6 +21,7 @@ public class CustomFieldDefinitionDto {
     private CustomFieldType fieldType;
     @NotNull(message = "isRequired must not be null")
     private Boolean isRequired;
-    private String defaultValue;
     private String additionalOptions;
+    private Date createdTime;
+    private Date updatedTime;
 }

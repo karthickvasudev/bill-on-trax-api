@@ -22,28 +22,35 @@ public class CustomFieldController {
 
     private final CustomFieldService customFieldService;
 
-
-    @GetMapping("search")
-    public Response<List<CustomFieldDefinitionDto>> listDefinitions(@RequestParam CustomFieldModule module,
-            @RequestParam Long storeId) {
+    @GetMapping("search/{module}")
+    public Response<List<CustomFieldDefinitionDto>> listDefinitions(@PathVariable CustomFieldModule module) {
         Response<List<CustomFieldDefinitionDto>> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
-        response.setData(customFieldService.listDefinitions(module, storeId));
+        response.setData(customFieldService.listDefinitions(module));
         return response;
     }
 
     @PostMapping
     public Response<CustomFieldDefinitionDto> createDefinition(@Valid @RequestBody CustomFieldDefinitionDto dto) {
         Response<CustomFieldDefinitionDto> response = new Response<>(
-                ResponseStatus.of(ResponseCode.CREATED, "Create custom field definition successfully. Please log in."));
+                ResponseStatus.of(ResponseCode.CREATED, "Create custom field definition successfully."));
         CustomFieldDefinitionDto createdDefinition = customFieldService.createDefinition(dto);
         response.setData(createdDefinition);
+        return response;
+    }
+
+    @GetMapping("{id}")
+    public Response<CustomFieldDefinitionDto> getDefinition(@PathVariable Long id) {
+        Response<CustomFieldDefinitionDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
+        CustomFieldDefinitionDto definition = customFieldService.getDefinitionById(id);
+        response.setData(definition);
         return response;
     }
 
     @PutMapping("{id}")
     public Response<CustomFieldDefinitionDto> updateDefinition(@PathVariable Long id,
             @Valid @RequestBody CustomFieldDefinitionDto dto) {
-        Response<CustomFieldDefinitionDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY, "Update custom field definition successfully. Please log in."));
+        Response<CustomFieldDefinitionDto> response = new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY,
+                "Update custom field definition successfully."));
         CustomFieldDefinitionDto updatedDefinition = customFieldService.updateDefinition(id, dto);
         response.setData(updatedDefinition);
         return response;
@@ -53,14 +60,6 @@ public class CustomFieldController {
     public Response<Void> deleteDefinition(@PathVariable Long id) {
         customFieldService.deleteDefinition(id);
         return new Response<>(ResponseStatus.of(ResponseCode.OK_NOTIFY, "Delete custom field definition successfully"));
-    }
-
-    @PostMapping("/values")
-    public Response<Void> saveFieldValues(@RequestParam CustomFieldModule module, @RequestParam Long storeId,
-            @RequestParam Long recordId, @Valid @RequestBody List<CustomFieldValueDto> values) {
-        Response<Void> response = new Response<>(ResponseStatus.of(ResponseCode.OK));
-        customFieldService.saveFieldValues(module, storeId, recordId, values);
-        return response;
     }
 
     @GetMapping("/supported-modules")

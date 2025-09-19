@@ -377,3 +377,10 @@ set is_custom_field_support = 1
 where feature_code = 'CUSTOMER';
 
 alter table custom_field_definition add column additional_options JSON;
+
+alter table custom_field_definition add column is_deleted boolean default false;
+
+alter table custom_field_definition
+    modify field_type enum ('TEXT', 'NUMBER', 'DATE', 'DATETIME', 'DROPDOWN', 'CHOICE', 'MULTICHOICE', 'FILE') not null;
+
+alter table custom_field_definition drop column default_value;

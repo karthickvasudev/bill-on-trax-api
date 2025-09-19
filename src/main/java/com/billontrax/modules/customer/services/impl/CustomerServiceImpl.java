@@ -2,6 +2,8 @@ package com.billontrax.modules.customer.services.impl;
 
 import java.util.Optional;
 
+import com.billontrax.modules.core.customfields.enums.CustomFieldModule;
+import com.billontrax.modules.core.customfields.service.CustomFieldService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerContactRepository customerContactRepository;
     private final CustomerMapper customerMapper;
+    private final CustomFieldService customFieldService;
 
     @Override
     @Transactional
@@ -42,7 +45,9 @@ public class CustomerServiceImpl implements CustomerService {
             Customer saved = customerRepository.save(entity);
             String code = String.format("CUST-%s-%d", DateUtil.formatyyyyMMdd(entity.getCreatedTime()), saved.getId());
             saved.setCustomerCode(code);
-            return customerMapper.toDto(customerRepository.save(saved));
+            CustomerDto savedCustomer = customerMapper.toDto(customerRepository.save(saved));
+            customFieldService.saveFieldValues(CustomFieldModule.Customer, savedCustomer.getId(), request.getCustomFields());
+            return savedCustomer;
         } catch (DataIntegrityViolationException e) {
             throw new ErrorMessageException(
                     String.format("Customer with the phone number %s already exists", request.getPhone()));

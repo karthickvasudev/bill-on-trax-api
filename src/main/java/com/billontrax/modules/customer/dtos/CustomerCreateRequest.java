@@ -2,6 +2,7 @@ package com.billontrax.modules.customer.dtos;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.billontrax.modules.customer.entities.CustomerType;
 
@@ -31,4 +32,5 @@ public class CustomerCreateRequest {
     private BigDecimal outstandingLimit = BigDecimal.ZERO;
     private String note;
     private List<CustomerContactDto> contacts;
+    private Map<String, Object> customFields;
 }

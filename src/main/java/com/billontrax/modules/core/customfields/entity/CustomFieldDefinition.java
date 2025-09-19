@@ -24,7 +24,8 @@ public class CustomFieldDefinition extends TimestampedWithUser {
     @Enumerated(EnumType.STRING)
     private CustomFieldType fieldType;
     private Boolean isRequired;
-    private String defaultValue;
     @Column(columnDefinition = "json")
     private String additionalOptions;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 }

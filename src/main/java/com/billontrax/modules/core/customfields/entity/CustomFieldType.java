@@ -1,5 +1,5 @@
 package com.billontrax.modules.core.customfields.entity;
 
 public enum CustomFieldType {
-    TEXT, NUMBER, DATE, DROPDOWN, CHOICE, MULTICHOICE
+    TEXT, NUMBER, DATE, DATETIME, DROPDOWN, CHOICE, MULTICHOICE
 }

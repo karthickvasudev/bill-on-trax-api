@@ -11,7 +11,7 @@ import com.billontrax.modules.customer.dtos.CustomerUpdateRequest;
 import com.billontrax.modules.customer.entities.Customer;
 import com.billontrax.modules.customer.entities.CustomerContact;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring")  
 public interface CustomerMapper {
 
     @Mapping(source = "contacts", target = "contacts")
