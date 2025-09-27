@@ -1,6 +1,7 @@
 package com.billontrax.modules.customer.entities;
 
 import com.billontrax.common.entities.TimestampedWithUser;
+import com.billontrax.modules.customer.enums.CustomerType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.persistence.*;
@@ -70,11 +71,4 @@ public class Customer extends TimestampedWithUser {
         contact.setCustomer(null);
     }
 
-    public List<CustomerContact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<CustomerContact> contacts) {
-        this.contacts = contacts;
-    }
 }

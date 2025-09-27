@@ -3,7 +3,7 @@ package com.billontrax.modules.customer.dtos;
 import lombok.Data;
 import java.math.BigDecimal;
 
-import com.billontrax.modules.customer.entities.CustomerType;
+import com.billontrax.modules.customer.enums.CustomerType;
 
 @Data
 public class CustomerUpdateRequest {

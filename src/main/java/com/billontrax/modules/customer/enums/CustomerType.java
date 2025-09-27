@@ -1,4 +1,4 @@
-package com.billontrax.modules.customer.entities;
+package com.billontrax.modules.customer.enums;
 
 public enum CustomerType {
     INDIVIDUAL,

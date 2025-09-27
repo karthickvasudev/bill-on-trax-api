@@ -10,14 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CustomFieldValue {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "custom_field_id")
-    private CustomFieldDefinition customField;
-
-    private Long recordId;
-    private String value;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "custom_field_id")
+	private Long customFieldId;
+	private Long recordId;
+	private Object value;
 }

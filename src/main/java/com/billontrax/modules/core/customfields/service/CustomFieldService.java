@@ -19,8 +19,6 @@ public interface CustomFieldService {
 
     void saveFieldValues(CustomFieldModule module, Long recordId, List<CustomFieldValueDto> values);
 
-    void saveFieldValues(CustomFieldModule module, Long recordId, Map<String, Object> values);
-
     List<CustomFieldValueDto> getFieldValues(CustomFieldModule module, Long storeId, Long recordId);
 
     List<Features> getCustomFieldSupportedModules();

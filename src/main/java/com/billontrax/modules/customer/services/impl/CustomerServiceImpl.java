@@ -37,9 +37,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerDto createCustomer(CustomerCreateRequest request) {
+		log.info("createCustomer request: {}", request);
         try {
             Customer entity = customerMapper.toEntity(request);
-            log.info("entity customer: {}", entity);
             entity.setIsDeleted(false);
             entity.setBusinessId(CurrentUserHolder.getBusinessId());
             Customer saved = customerRepository.save(entity);

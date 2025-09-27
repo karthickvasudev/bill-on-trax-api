@@ -4,7 +4,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.billontrax.modules.customer.entities.CustomerType;
+import com.billontrax.modules.customer.enums.CustomerType;
 
 @Data
 public class CustomerDto {

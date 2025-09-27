@@ -2,9 +2,9 @@ package com.billontrax.modules.customer.dtos;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
-import com.billontrax.modules.customer.entities.CustomerType;
+import com.billontrax.modules.core.customfields.dto.CustomFieldValueDto;
+import com.billontrax.modules.customer.enums.CustomerType;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -32,5 +32,5 @@ public class CustomerCreateRequest {
     private BigDecimal outstandingLimit = BigDecimal.ZERO;
     private String note;
     private List<CustomerContactDto> contacts;
-    private Map<String, Object> customFields;
+    private List<CustomFieldValueDto> customFields;
 }
