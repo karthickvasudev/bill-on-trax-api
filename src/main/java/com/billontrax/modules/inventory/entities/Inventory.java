@@ -2,7 +2,7 @@ package com.billontrax.modules.inventory.entities;
 
 import com.billontrax.common.entities.TimestampedWithUser;
 import com.billontrax.modules.product.entities.Product;
-import com.billontrax.modules.store.entities.Store;
+import com.billontrax.modules.warehouse.entities.Warehouse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -64,6 +64,6 @@ public class Inventory extends TimestampedWithUser {
     /** Warehouse / Store relationship (read-only) */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
-    private Store warehouse;
+    private Warehouse warehouse;
 
 }

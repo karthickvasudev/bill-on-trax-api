@@ -13,6 +13,8 @@ public class InventoryDto {
     private String inventoryId;
     private Long productId;
     private Long warehouseId;
+    private String warehouseName; // added
+    private Boolean warehouseActive; // added
     private Integer stockQuantity;
     private Integer lowStockAlert;
     private Integer reorderLevel;
@@ -21,4 +23,3 @@ public class InventoryDto {
     private Date updatedTime;
     private Long updatedBy;
 }
-

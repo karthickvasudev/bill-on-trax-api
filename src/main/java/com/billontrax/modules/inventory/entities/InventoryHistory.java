@@ -3,7 +3,7 @@ package com.billontrax.modules.inventory.entities;
 import com.billontrax.common.entities.TimestampedWithUser;
 import com.billontrax.modules.inventory.enums.InventoryHistoryType;
 import com.billontrax.modules.product.entities.Product;
-import com.billontrax.modules.store.entities.Store;
+import com.billontrax.modules.warehouse.entities.Warehouse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class InventoryHistory extends TimestampedWithUser {
     @NotNull
     private Long productId;
 
-    /** Optional warehouse/store FK */
+    /** Optional warehouse FK */
     @Column(name = "warehouse_id")
     private Long warehouseId;
 
@@ -56,6 +56,5 @@ public class InventoryHistory extends TimestampedWithUser {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
-    private Store warehouse;
+    private Warehouse warehouse;
 }
-

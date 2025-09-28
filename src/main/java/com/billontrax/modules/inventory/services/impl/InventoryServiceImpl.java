@@ -11,6 +11,7 @@ import com.billontrax.modules.inventory.mappers.InventoryMapper;
 import com.billontrax.modules.inventory.repositories.InventoryRepository;
 import com.billontrax.modules.inventory.services.InventoryHistoryService;
 import com.billontrax.modules.inventory.services.InventoryService;
+import com.billontrax.modules.warehouse.repositories.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,11 +31,18 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository repository;
     private final InventoryMapper mapper;
     private final InventoryHistoryService historyService;
+    private final WarehouseRepository warehouseRepository;
 
     @Override
     @Transactional
     public InventoryDto create(InventoryCreateRequest request) {
         log.info("Creating inventory: {}", request);
+        // Validate warehouse active if provided
+        if (request.getWarehouseId() != null) {
+            warehouseRepository.findById(request.getWarehouseId())
+                    .filter(w -> Boolean.TRUE.equals(w.getIsActive()))
+                    .orElseThrow(() -> new ErrorMessageException("Inactive or invalid warehouse specified"));
+        }
         try {
             Inventory entity = mapper.toEntity(request);
             Inventory saved = repository.save(entity);
@@ -54,6 +62,11 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional
     public InventoryDto update(Long id, InventoryUpdateRequest request) {
         Inventory inv = repository.findByIdAndDeletedFalse(id).orElseThrow(() -> new ErrorMessageException("Inventory not found"));
+        if (request.getWarehouseId() != null && !request.getWarehouseId().equals(inv.getWarehouseId())) {
+            warehouseRepository.findById(request.getWarehouseId())
+                    .filter(w -> Boolean.TRUE.equals(w.getIsActive()))
+                    .orElseThrow(() -> new ErrorMessageException("Inactive or invalid warehouse specified"));
+        }
         mapper.updateEntityFromDto(request, inv);
         Inventory saved = repository.save(inv);
         return mapper.toDto(saved);

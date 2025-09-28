@@ -10,9 +10,10 @@ import org.mapstruct.*;
 public interface InventoryMapper {
     Inventory toEntity(InventoryCreateRequest req);
 
+    @Mapping(target = "warehouseName", source = "warehouse.name")
+    @Mapping(target = "warehouseActive", source = "warehouse.isActive")
     InventoryDto toDto(Inventory entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(InventoryUpdateRequest req, @MappingTarget Inventory entity);
 }
-
